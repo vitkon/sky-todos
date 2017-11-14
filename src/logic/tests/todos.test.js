@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-freeze';
-import reducer, { initialState, actionCreators, ADD_ITEM, REMOVE_ITEM } from '../todos';
+import reducer, { initialState, actionCreators, ADD_ITEM, REMOVE_ITEM, TOGGLE_ITEM } from '../todos';
 
 const mockState = {
   items: [
@@ -38,6 +38,15 @@ describe('reducer', () => {
     expect(result.items).toHaveLength(1);
     expect(result.items[0].id).toEqual(2);
     expect(result.items[0].content).toEqual('second');
+  });
+
+  it('should toggle item on TOGGLE_ITEM', () => {
+    const mockAction = actionCreators.toggleItem(1);
+    const result = reducer(state, mockAction);
+    expect(result.items).toHaveLength(2);
+    expect(result.items[0].id).toEqual(1);
+    expect(result.items[0].content).toEqual('first');
+    expect(result.items[0].done).toBe(true);
   });
 });
 

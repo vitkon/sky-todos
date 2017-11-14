@@ -5,10 +5,11 @@ import { ItemsList, mapDispatchToProps, mapStateToProps } from '../index';
 
 const defaultProps = {
   items: [],
-  onRemove: () => {}
+  onRemove: () => {},
+  onToggle: () => {}
 };
 
-describe.only('ItemsList', () => {
+describe('ItemsList', () => {
   it('renders without crashing', () => {
     shallow(<ItemsList {...defaultProps} />);
   });
@@ -34,19 +35,38 @@ describe.only('ItemsList', () => {
     const items = [{ id: 1, content: 'Test 1' }];
     const mockCallBack = jest.fn();
     const renderedItem = shallow(<ItemsList {...defaultProps} items={items} onRemove={mockCallBack} />);
-    renderedItem.find('.close-icon').simulate('click');
+    renderedItem.find('button').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
+
+  it('should handle toggle checkbox click', () => {
+    const items = [{ id: 1, content: 'Test 1' }];
+    const mockCallBack = jest.fn();
+    const renderedItem = shallow(<ItemsList {...defaultProps} items={items} onToggle={mockCallBack} />);
+    renderedItem.find('input[type="checkbox"]').simulate('click');
+    expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
+
+  it('should have is-done class', () => {
+    const items = [{ id: 1, content: 'Test 1', done: true }];
+    const mockCallBack = jest.fn();
+    const renderedItem = shallow(<ItemsList {...defaultProps} items={items} />);
+    const list = renderedItem.find('li').simulate('click');
+    expect(list.hasClass('is-done')).toBe(true);
   });
 
   it('should map dispatch to props', () => {
     const dispatchSpy = jest.fn();
     const id = 123;
-    const { onRemove } = mapDispatchToProps(dispatchSpy);
-    const expectedAction = actionCreators.removeItem(id);
+    const { onRemove, onToggle } = mapDispatchToProps(dispatchSpy);
+    const expectedAction1 = actionCreators.toggleItem(id);
+    const expectedAction2 = actionCreators.removeItem(id);
+    onToggle(id);
     onRemove(id);
 
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
+    expect(dispatchSpy).toHaveBeenCalledTimes(2);
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction1);
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction2);
   });
 
   it('should map state to props', () => {

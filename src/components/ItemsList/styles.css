@@ -16,6 +16,10 @@
   background: #efefef;
 }
 
+.itemsList-ul .is-done {
+  text-decoration: line-through;
+}
+
 .close-icon {
   width: 15px;
   height: 15px;
