@@ -13,12 +13,18 @@
     "redux-devtools": "3.4.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.13"
+    "deep-freeze": "0.0.1",
+    "react-scripts": "1.0.13",
+    "sinon": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "collectCoverageFrom" : ["**/*.js", "!**/node_modules/**", "!**/coverage/**", "!**/src/index.js"]
   }
 }

@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addItem } from '../../logic/todos';
+import { actionCreators } from '../../logic/todos';
 import './styles.css';
 
 export const ItemCreator = ({ onAdd }) => {
   let inputField;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    inputField.value && onAdd(inputField.value);
+    inputField.value = '';
+  }
+
   return (
-    <div className="itemCreator">
+    <form className="itemCreator" onSubmit={handleSubmit}>
       <input
         ref={input => {
           inputField = input;
@@ -21,12 +27,9 @@ export const ItemCreator = ({ onAdd }) => {
         className="itemCreator-button"
         type="button"
         value="Add Task"
-        onClick={() => {
-          inputField.value && onAdd(inputField.value);
-          inputField.value = '';
-        }}
+        onClick={handleSubmit}
       />
-    </div>
+    </form>
   );
 };
 
@@ -34,8 +37,8 @@ ItemCreator.propTypes = {
   onAdd: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  onAdd: newItem => dispatch(addItem(newItem)),
+export const mapDispatchToProps = dispatch => ({
+  onAdd: newItem => dispatch(actionCreators.addItem(newItem)),
 });
 
 export default connect(null, mapDispatchToProps)(ItemCreator);

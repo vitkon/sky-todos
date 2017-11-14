@@ -1,4 +1,14 @@
-import reducer, { initialState, addItem } from '../todos';
+import deepFreeze from 'deep-freeze';
+import reducer, { initialState, actionCreators, ADD_ITEM, REMOVE_ITEM } from '../todos';
+
+const mockState = {
+  items: [
+    { id: 1, content: 'first' },
+    { id: 2, content: 'second' },
+  ]
+}
+
+const state = deepFreeze(reducer(mockState, { type: 'INIT'}));
 
 describe('reducer', () => {
   it('should return state for unknown action', () => {
@@ -15,16 +25,32 @@ describe('reducer', () => {
   });
 
   it('should add new items on ADD_ITEM', () => {
-    const state = {
-      items: [
-        { id: 1, content: 'first' },
-        { id: 2, content: 'second' },
-      ]
-    }
-    const mockAction = addItem('third');
+    const mockAction = actionCreators.addItem('third');
     const result = reducer(state, mockAction);
     expect(result.items).toHaveLength(3);
     expect(result.items[2].id).toEqual(3);
     expect(result.items[2].content).toEqual('third');
+  });
+
+  it('should remove item on REMOVE_ITEM', () => {
+    const mockAction = actionCreators.removeItem(1);
+    const result = reducer(state, mockAction);
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0].id).toEqual(2);
+    expect(result.items[0].content).toEqual('second');
+  });
+});
+
+describe('actions', () => {
+  it('should dispatch a correct ADD_ITEM action', () => {
+    const expectedAction = { type: ADD_ITEM, content: 'foo' };
+    const result = actionCreators.addItem('foo');
+    expect(result).toEqual(expectedAction);
+  });
+
+  it('should dispatch a correct REMOVE_ITEM action', () => {
+    const expectedAction = { type: REMOVE_ITEM, id: 123 };
+    const result = actionCreators.removeItem(123);
+    expect(result).toEqual(expectedAction);
   });
 });
