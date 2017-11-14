@@ -34,11 +34,11 @@ export const ItemCreator = ({ onAdd }) => {
 };
 
 ItemCreator.propTypes = {
-  onAdd: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired
 };
 
 export const mapDispatchToProps = dispatch => ({
-  onAdd: newItem => dispatch(actionCreators.addItem(newItem)),
+  onAdd: newItem => dispatch(actionCreators.addItem(newItem))
 });
 
 export default connect(null, mapDispatchToProps)(ItemCreator);

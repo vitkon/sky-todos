@@ -26,8 +26,8 @@ export const initialState = {
   items: [
     { id: 1, content: 'Call mum' },
     { id: 2, content: 'Buy cat food' },
-    { id: 3, content: 'Water the plants' },
-  ],
+    { id: 3, content: 'Water the plants' }
+  ]
 };
 
 const reducer = (state = initialState, action) => {
@@ -52,16 +52,13 @@ const reducer = (state = initialState, action) => {
       case TOGGLE_ITEM:
       return {
         ...state,
-        items: state.items.map(item => {
-          if (item.id !== action.id) {
-            return item;
-          }
-  
-          return {
+        items: state.items.map(item => (item.id !== action.id)
+          ? item
+          : {
             ...item,
-            done: !item.done
-          };
-        })
+            isCompleted: !item.isCompleted
+          }
+        )
       }
     default:
       return state;

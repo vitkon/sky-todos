@@ -2,6 +2,7 @@ import deepFreeze from 'deep-freeze';
 import reducer, { initialState, actionCreators, ADD_ITEM, REMOVE_ITEM, TOGGLE_ITEM } from '../todos';
 
 const mockState = {
+  filters: {},
   items: [
     { id: 1, content: 'first' },
     { id: 2, content: 'second' },
@@ -46,7 +47,7 @@ describe('reducer', () => {
     expect(result.items).toHaveLength(2);
     expect(result.items[0].id).toEqual(1);
     expect(result.items[0].content).toEqual('first');
-    expect(result.items[0].done).toBe(true);
+    expect(result.items[0].isCompleted).toBe(true);
   });
 });
 

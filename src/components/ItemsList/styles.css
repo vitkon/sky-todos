@@ -16,7 +16,7 @@
   background: #efefef;
 }
 
-.itemsList-ul .is-done {
+.itemsList-ul .is-completed {
   text-decoration: line-through;
 }
 

@@ -5,6 +5,7 @@ import { ItemsList, mapDispatchToProps, mapStateToProps } from '../index';
 
 const defaultProps = {
   items: [],
+  filters: [],
   onRemove: () => {},
   onToggle: () => {}
 };
@@ -47,12 +48,23 @@ describe('ItemsList', () => {
     expect(mockCallBack.mock.calls.length).toEqual(1);
   });
 
-  it('should have is-done class', () => {
-    const items = [{ id: 1, content: 'Test 1', done: true }];
-    const mockCallBack = jest.fn();
+  it('should have is-completed class', () => {
+    const items = [{ id: 1, content: 'Test 1', isCompleted: true }];
     const renderedItem = shallow(<ItemsList {...defaultProps} items={items} />);
     const list = renderedItem.find('li').simulate('click');
-    expect(list.hasClass('is-done')).toBe(true);
+    expect(list.hasClass('is-completed')).toBe(true);
+  });
+
+  it('should hide completed items', () => {
+    const items = [
+      {id: 1, content: 'Test 1', isCompleted: true},
+      {id: 2, content: 'Test 2', isCompleted: false},
+      {id: 3, content: 'Test 3'}
+    ];
+    const filters = ['hideCompleted'];
+    const renderedItem = shallow(<ItemsList {...defaultProps} items={items} filters={filters} />);
+    const list = renderedItem.find('li');
+    expect(list.length).toBe(2);
   });
 
   it('should map dispatch to props', () => {
@@ -70,9 +82,9 @@ describe('ItemsList', () => {
   });
 
   it('should map state to props', () => {
-    const state = { todos: { items: [1, 2, 3]} };
+    const state = { todos: { items: [1, 2, 3] }, filters: {} };
     const mappedState = mapStateToProps(state);
-    const expectedState = { items: [1, 2, 3] }
+    const expectedState = { items: [1, 2, 3], filters: [] };
     expect(mappedState).toEqual(expectedState);
   });
 });
