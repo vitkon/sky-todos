@@ -1,7 +1,47 @@
 .itemsList-ul {
   list-style-type: none;
+  max-width: 40%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .itemsList-ul li {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   padding: 5px;
+}
+
+.itemsList-ul li:hover {
+  background: #efefef;
+}
+
+.itemsList-ul .is-completed {
+  text-decoration: line-through;
+}
+
+.close-icon {
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+
+.close-icon:before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
